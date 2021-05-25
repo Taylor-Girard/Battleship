@@ -14,17 +14,21 @@ class BattleshipGame{
 
         //print welcome message
         System.out.println("Welcome to Battleship!");
+        System.out.println();
 
         //get player name
         Scanner input = new Scanner(System.in);
         System.out.print("Enter your name: ");
         player1 = input.nextLine();
-        System.out.println("Hi " + player1 + ". Thank you for playing!");
+        System.out.println();
+        System.out.print("Hi " + player1 + ". Thank you for playing! Press Enter twice to generate your empty board: ");
+        input.nextLine();
+        input.nextLine();
 
         //create and output the player's empty board
         player1Board = new char[13][13];
 
-        //put the array into the functions to set up the board
+        //put the array into the functions to set up the player's board
         setUpBoard(player1Board);
 
         //output the empty board
@@ -51,7 +55,7 @@ class BattleshipGame{
     int i;
     int j;
 
-    //print the letters at the very top
+    //create the letters at the very top
     char letter = 'a';
     for (i = 0; i < 1; ++i) {
         for (j = 2; j < 12; ++j) {
@@ -62,14 +66,14 @@ class BattleshipGame{
         }
     }
 
-    //print top row
+    //create top row
     for (i = 1; i < 2; ++i) {
         for (j = 2; j < 12; ++j) {
             board[i][j] = '-';
         }
     }
 
-    //print numbers at the side
+    //create numbers at the side
     char number = '0';
     for (i = 2; i < 12; ++i) {
         for (j = 0; j < 1; ++j) {
@@ -77,6 +81,27 @@ class BattleshipGame{
             int changeNum = number;
             changeNum += 1;
             number = (char) changeNum;
+        }
+    }
+
+    //create left side row
+    for (i = 2; i < 12; ++i) {
+        for (j = 1; j < 2; ++j) {
+            board[i][j] = '|';
+        }
+    }
+
+    //create right side row
+    for (i = 2; i < 12; ++i) {
+        for (j = 12; j < 13; ++j) {
+            board[i][j] = '|';
+        }
+    }
+
+    //create bottom row
+    for (i = 12; i < 13; ++i) {
+        for (j = 2; j < 12; ++j) {
+            board[i][j] = '-';
         }
     }
         
