@@ -6,13 +6,11 @@ class BattleshipGame{
 
     public static void main(String[] args) {
 
-        //initialize counters
-        int i;
-        int j;
-
         //initialize all variables/arrays that will be used
         String player1;
         char[][] player1Board;
+        int i;
+        int j;
 
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -27,10 +25,11 @@ class BattleshipGame{
         player1Board = new char[13][13];
 
         //put the array into the functions to set up the board
-        makeTopRows(player1Board);
+        setUpBoard(player1Board);
 
         //output the empty board
         for (i = 0; i < 13; ++i) {
+            System.out.println();
             System.out.println();
             for (j = 0; j < 13; ++j) {
                 System.out.print(player1Board[i][j] + "\t");
@@ -45,8 +44,8 @@ class BattleshipGame{
 
 
 
-    //create method to print the top two rows of the player's board 
-    public static char[][] makeTopRows(char[][] board) {
+    //create method to create the empty board
+    public static char[][] setUpBoard(char[][] board) {
 
     //initialize counters
     int i;
@@ -60,6 +59,24 @@ class BattleshipGame{
             int num = letter;
             num += 1;
             letter = (char) num;
+        }
+    }
+
+    //print top row
+    for (i = 1; i < 2; ++i) {
+        for (j = 2; j < 12; ++j) {
+            board[i][j] = '-';
+        }
+    }
+
+    //print numbers at the side
+    char number = '0';
+    for (i = 2; i < 12; ++i) {
+        for (j = 0; j < 1; ++j) {
+            board[i][j] = number;
+            int changeNum = number;
+            changeNum += 1;
+            number = (char) changeNum;
         }
     }
         
