@@ -9,6 +9,13 @@ class BattleshipGame{
         //initialize all variables/arrays that will be used
         String player1;
         char[][] player1Board;
+        int carrierPieces = 5;
+        int battleshipPieces = 4;
+        int cruiserPieces = 3;
+        int submarinePieces = 3;
+        int destroyerPieces = 2;
+        String carrierPos;
+        String carrierDir;
 
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -19,6 +26,8 @@ class BattleshipGame{
         System.out.print("Enter your name: ");
         player1 = input.nextLine();
         System.out.println();
+
+        //pause until player is ready to output the board
         System.out.print("Hi " + player1 + ". Thank you for playing! Press Enter twice to generate your empty board: ");
         input.nextLine();
         input.nextLine();
@@ -31,6 +40,21 @@ class BattleshipGame{
 
         //output the empty board
         outputBoard(player1Board);
+
+        do {
+            //Ask user to place carrier & in what direction
+            System.out.println("Where would you like to place the front of your carrier (5 spaces)?");
+            System.out.print("Please enter in the format a1, b2, etc: ");
+
+            carrierPos = input.nextLine();
+
+            System.out.print("What direction do you want to ship to go in? Enter h for horizontal and v for vertical: ");
+            carrierDir = input.nextLine();
+
+        } while (checkPiece(carrierPos, carrierDir, carrierPieces));
+
+        
+
 
         //close the input
         input.close();
@@ -97,13 +121,14 @@ class BattleshipGame{
             }
         }
 
+        //return the final empty board
         return board;
 
     }
     
     //create method to output board
     public static void outputBoard(char[][] board) {
-    
+
         //initialize counters
         int i;
         int j;
@@ -116,6 +141,36 @@ class BattleshipGame{
                 System.out.print(board[i][j] + "\t");
             }
         }
+        System.out.println();
+    }
+    
+    //create method to check if a piece can fit in the window with the given position & direction
+    public static Boolean checkPiece(String pos, String dir, int numPieces) {
+        char column = pos.charAt(0);
+        char row = pos.charAt(1);
+        char direction = dir.charAt(0);
+        boolean bool = false;
+        int rowNum = Character.getNumericValue(row);
+
+        if ((direction == 'v') && ((rowNum + numPieces) > 10)) {
+            bool = true;
+        }
+        else if ((direction == 'h' && (numPieces == 5) && (column == 'g') || (column == 'h') || (column == 'i') || (column == 'j'))) {
+            bool = true;
+        }
+        else if ((direction == 'h' && (numPieces == 4) && (column == 'h') || (column == 'i') || (column == 'j'))) {
+            bool = true;
+        }
+        else if ((direction == 'h' && (numPieces == 3) && (column == 'i') || (column == 'j'))) {
+            bool = true;
+        }
+        else if ((direction == 'h' && (numPieces == 2) && (column == 'j'))) {
+            bool = true;
+        }
+        else {
+            bool = false;
+        }
+        return bool;
     }
 
 }
