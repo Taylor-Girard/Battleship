@@ -42,19 +42,26 @@ class BattleshipGame{
         outputBoard(player1Board);
 
         do {
-            //Ask user to place carrier & in what direction
+            //Ask user where to place carrier
             System.out.println("Where would you like to place the front of your carrier (5 spaces)?");
             System.out.print("Please enter in the format a1, b2, etc: ");
-
             carrierPos = input.nextLine();
 
+            //Ask user what direction they want the carrier to go in
+            System.out.println();
             System.out.print("What direction do you want to ship to go in? Enter h for horizontal and v for vertical: ");
             carrierDir = input.nextLine();
+            System.out.println();
 
         } while (checkPiece(carrierPos, carrierDir, carrierPieces));
 
         //set the carrier down based on what the user put
         addPiece(carrierPos, carrierDir, carrierPieces, player1Board);
+
+        //have the user hit enter twice to see their new board
+        System.out.print(player1 + ", press Enter twice to generate the board with the carrier added: ");
+        input.nextLine();
+        input.nextLine();
 
         //output board with new piece
         outputBoard(player1Board);
@@ -63,11 +70,7 @@ class BattleshipGame{
         input.close();
     }
 
-
-
-
-
-    //create method to make the empty board
+    //method to make the empty board
     public static char[][] setUpBoard(char[][] board) {
 
         //initialize counters
@@ -129,7 +132,7 @@ class BattleshipGame{
 
     }
     
-    //create method to output board
+    //method to output board
     public static void outputBoard(char[][] board) {
 
         //initialize counters
@@ -147,7 +150,7 @@ class BattleshipGame{
         System.out.println();
     }
     
-    //create method to check if a piece can fit in the window with the given position & direction
+    //method to check if a piece can fit in the window with the given position & direction
     public static Boolean checkPiece(String pos, String dir, int numPieces) {
        
         //initialize needed variables
@@ -157,7 +160,7 @@ class BattleshipGame{
         boolean bool = false;
         int rowNum = Character.getNumericValue(row);
 
-        //check for both vertical and horizontal placement if user chose a spot with enough space for the piece
+        //check for both the vertical and horizontal placement if user chose a spot with enough space for the piece
         if ((direction == 'v') && ((rowNum + numPieces) > 10)) {
             bool = true;
         } else if ((direction == 'h' && (numPieces == 5) && ((column == 'g') || (column == 'h') || (column == 'i') 
@@ -175,9 +178,9 @@ class BattleshipGame{
         return bool;
     }
 
-    //create a method to place down the pieces for you
+    //method to place down the pieces for you
     public static void addPiece(String pos, String dir, int numPieces, char[][] board) {
-        
+
         // initialize needed variables
         char column = pos.charAt(0);
         char row = pos.charAt(1);
@@ -187,6 +190,7 @@ class BattleshipGame{
         int i;
         int j;
 
+        //if the direction is horizontal, place the piece across the correct number of columns
         if (direction == 'h') {
 
             for (i = rowNum + 2; i < rowNum + 3; ++i) {
@@ -195,10 +199,10 @@ class BattleshipGame{
                 }
             }
 
-        }else{
+            //if the direction is vertical, place the piece across the correct number of rows
+        } else {
 
-        
-            for (i = rowNum + 2 ; i < rowNum + numPieces + 2; ++i) {
+            for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
                 for (j = columnNum; j < columnNum + 1; ++j) {
                     board[i][j] = '+';
                 }
@@ -206,6 +210,7 @@ class BattleshipGame{
 
         }
     }
+    
 
         
 }
