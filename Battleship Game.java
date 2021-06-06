@@ -53,8 +53,11 @@ class BattleshipGame{
 
         } while (checkPiece(carrierPos, carrierDir, carrierPieces));
 
-        
+        //set the carrier down based on what the user put
+        addPiece(carrierPos, carrierDir, carrierPieces, player1Board);
 
+        //output board with new piece
+        outputBoard(player1Board);
 
         //close the input
         input.close();
@@ -133,7 +136,7 @@ class BattleshipGame{
         int i;
         int j;
 
-        //output board
+        //output board by looping through indexes and printing
         for (i = 0; i < 13; ++i) {
             System.out.println();
             System.out.println();
@@ -146,31 +149,63 @@ class BattleshipGame{
     
     //create method to check if a piece can fit in the window with the given position & direction
     public static Boolean checkPiece(String pos, String dir, int numPieces) {
+       
+        //initialize needed variables
         char column = pos.charAt(0);
         char row = pos.charAt(1);
         char direction = dir.charAt(0);
         boolean bool = false;
         int rowNum = Character.getNumericValue(row);
 
+        //check for both vertical and horizontal placement if user chose a spot with enough space for the piece
         if ((direction == 'v') && ((rowNum + numPieces) > 10)) {
             bool = true;
-        }
-        else if ((direction == 'h' && (numPieces == 5) && (column == 'g') || (column == 'h') || (column == 'i') || (column == 'j'))) {
+        } else if ((direction == 'h' && (numPieces == 5) && ((column == 'g') || (column == 'h') || (column == 'i') 
+                || (column == 'j')))) {
             bool = true;
-        }
-        else if ((direction == 'h' && (numPieces == 4) && (column == 'h') || (column == 'i') || (column == 'j'))) {
+        } else if ((direction == 'h' && (numPieces == 4) && ((column == 'h') || (column == 'i') || (column == 'j')))) {
             bool = true;
-        }
-        else if ((direction == 'h' && (numPieces == 3) && (column == 'i') || (column == 'j'))) {
+        } else if ((direction == 'h' && (numPieces == 3) && ((column == 'i') || (column == 'j')))) {
             bool = true;
-        }
-        else if ((direction == 'h' && (numPieces == 2) && (column == 'j'))) {
+        } else if ((direction == 'h' && (numPieces == 2) && (column == 'j'))) {
             bool = true;
-        }
-        else {
+        } else {
             bool = false;
         }
         return bool;
     }
 
+    //create a method to place down the pieces for you
+    public static void addPiece(String pos, String dir, int numPieces, char[][] board) {
+        
+        // initialize needed variables
+        char column = pos.charAt(0);
+        char row = pos.charAt(1);
+        char direction = dir.charAt(0);
+        int rowNum = Character.getNumericValue(row);
+        int columnNum = Character.getNumericValue(column) - 8;
+        int i;
+        int j;
+
+        if (direction == 'h') {
+
+            for (i = rowNum + 2; i < rowNum + 3; ++i) {
+                for (j = columnNum; j < columnNum + numPieces; ++j) {
+                    board[i][j] = '+';
+                }
+            }
+
+        }else{
+
+        
+            for (i = rowNum + 2 ; i < rowNum + numPieces + 2; ++i) {
+                for (j = columnNum; j < columnNum + 1; ++j) {
+                    board[i][j] = '+';
+                }
+            }
+
+        }
+    }
+
+        
 }
