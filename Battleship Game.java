@@ -50,6 +50,24 @@ class BattleshipGame{
         //get the position of the battleship and place it down
         getPieceAndAdd(player1Board, battleshipPieces, player1, nameAndNumber);
 
+        // set piece name to cruiser and piece number to 3
+        nameAndNumber = "cruiser (3 pieces)";
+
+        // get the position of the cruiser and place it down
+        getPieceAndAdd(player1Board, cruiserPieces, player1, nameAndNumber);
+
+        // set piece name to submarine and piece number to 3
+        nameAndNumber = "submarine (3 pieces)";
+
+        // get the position of the submarine and place it down
+        getPieceAndAdd(player1Board, submarinePieces, player1, nameAndNumber);
+
+        // set piece name to submarine and piece number to 3
+        nameAndNumber = "destroyer (2 pieces)";
+
+        // get the position of the submarine and place it down
+        getPieceAndAdd(player1Board, destroyerPieces, player1, nameAndNumber);
+
         //close the input
         input.close();
     }
@@ -270,7 +288,7 @@ class BattleshipGame{
         addPiece(pos, dir, pieces, board);
 
         // have the user hit enter twice to see their new board
-        System.out.print(playerName + ", press Enter twice to generate the board with the battleship added: ");
+        System.out.print(playerName + ", press Enter twice to generate the board with the piece added: ");
         input.nextLine();
         input.nextLine();
 
