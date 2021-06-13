@@ -16,6 +16,8 @@ class BattleshipGame{
         int destroyerPieces = 2;
         String carrierPos;
         String carrierDir;
+        String battleshipPos;
+        String battleshipDir;
 
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -64,6 +66,32 @@ class BattleshipGame{
         input.nextLine();
 
         //output board with new piece
+        outputBoard(player1Board);
+
+        //have the user choose where they want to put their battleship
+        do {
+            // Ask user where to place battleship
+            System.out.println("Where would you like to place the front of your battleship (4 spaces)?");
+            System.out.print("Please enter in the format a1, b2, etc: ");
+            battleshipPos = input.nextLine();
+
+            // Ask user what direction they want the battleship to go in
+            System.out.println();
+            System.out.print("What direction do you want to ship to go in? Enter h for horizontal and v for vertical: ");
+            battleshipDir = input.nextLine();
+            System.out.println();
+
+        } while (checkPiece(battleshipPos, battleshipDir, battleshipPieces)||(checkOverlap(battleshipPos, battleshipDir, battleshipPieces, player1Board)));
+        
+        // set the carrier down based on what the user put
+        addPiece(battleshipPos, battleshipDir, battleshipPieces, player1Board);
+
+        // have the user hit enter twice to see their new board
+        System.out.print(player1 + ", press Enter twice to generate the board with the battleship added: ");
+        input.nextLine();
+        input.nextLine();
+
+        // output board with new piece
         outputBoard(player1Board);
 
         //close the input
@@ -211,6 +239,49 @@ class BattleshipGame{
         }
     }
     
+    //method to check that piece is not overlapping another piece
+    public static Boolean checkOverlap(String pos, String dir, int numPieces, char[][] board) {
 
-        
+        // initialize needed variables
+        char column = pos.charAt(0);
+        char row = pos.charAt(1);
+        char direction = dir.charAt(0);
+        Boolean bool;
+        int rowNum = Character.getNumericValue(row);
+        int columnNum = Character.getNumericValue(column) - 8;
+        int i;
+        int j;
+
+        //for either direction, check if there are any overlapping pieces in the path of the newly placed piece
+        if (direction == 'h') {
+
+            for (i = rowNum + 2; i < rowNum + 3; ++i) {
+                for (j = columnNum; j < columnNum + numPieces; ++j) {
+                    if (board[i][j] == '+') {
+                        bool = true;
+                        return bool;
+                    } 
+                
+                }
+            }
+
+        }
+        else {
+            
+            for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
+                for (j = columnNum; j < columnNum + 1; ++j) {
+                    if (board[i][j] == '+') {
+                        bool = true;
+                        return bool;
+                    } 
+                }
+            }
+
+        }
+    
+        //return the boolean as false value if nothing overlaps
+        bool = false;
+        return bool;
+    }
+    
 }
