@@ -14,10 +14,6 @@ class BattleshipGame{
         int cruiserPieces = 3;
         int submarinePieces = 3;
         int destroyerPieces = 2;
-        String carrierPos;
-        String carrierDir;
-        String battleshipPos;
-        String battleshipDir;
 
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -43,56 +39,10 @@ class BattleshipGame{
         //output the empty board
         outputBoard(player1Board);
 
-        do {
-            //Ask user where to place carrier
-            System.out.println("Where would you like to place the front of your carrier (5 spaces)?");
-            System.out.print("Please enter in the format a1, b2, etc: ");
-            carrierPos = input.nextLine();
-
-            //Ask user what direction they want the carrier to go in
-            System.out.println();
-            System.out.print("What direction do you want to ship to go in? Enter h for horizontal and v for vertical: ");
-            carrierDir = input.nextLine();
-            System.out.println();
-
-        } while (checkPiece(carrierPos, carrierDir, carrierPieces));
-
-        //set the carrier down based on what the user put
-        addPiece(carrierPos, carrierDir, carrierPieces, player1Board);
-
-        //have the user hit enter twice to see their new board
-        System.out.print(player1 + ", press Enter twice to generate the board with the carrier added: ");
-        input.nextLine();
-        input.nextLine();
-
-        //output board with new piece
-        outputBoard(player1Board);
-
-        //have the user choose where they want to put their battleship
-        do {
-            // Ask user where to place battleship
-            System.out.println("Where would you like to place the front of your battleship (4 spaces)?");
-            System.out.print("Please enter in the format a1, b2, etc: ");
-            battleshipPos = input.nextLine();
-
-            // Ask user what direction they want the battleship to go in
-            System.out.println();
-            System.out.print("What direction do you want to ship to go in? Enter h for horizontal and v for vertical: ");
-            battleshipDir = input.nextLine();
-            System.out.println();
-
-        } while (checkPiece(battleshipPos, battleshipDir, battleshipPieces)||(checkOverlap(battleshipPos, battleshipDir, battleshipPieces, player1Board)));
+        getPieceAndAdd(player1Board, carrierPieces, player1);
         
-        // set the carrier down based on what the user put
-        addPiece(battleshipPos, battleshipDir, battleshipPieces, player1Board);
-
-        // have the user hit enter twice to see their new board
-        System.out.print(player1 + ", press Enter twice to generate the board with the battleship added: ");
-        input.nextLine();
-        input.nextLine();
-
-        // output board with new piece
-        outputBoard(player1Board);
+        //get the position of the battleship and place it down
+        getPieceAndAdd(player1Board, battleshipPieces, player1);
 
         //close the input
         input.close();
@@ -260,28 +210,68 @@ class BattleshipGame{
                     if (board[i][j] == '+') {
                         bool = true;
                         return bool;
-                    } 
-                
+                    }
+
                 }
             }
 
-        }
-        else {
-            
+        } else {
+
             for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
                 for (j = columnNum; j < columnNum + 1; ++j) {
                     if (board[i][j] == '+') {
                         bool = true;
                         return bool;
-                    } 
+                    }
                 }
             }
 
         }
-    
+
         //return the boolean as false value if nothing overlaps
         bool = false;
         return bool;
+    }
+    
+    //method that gets the piece and places it down
+    public static void getPieceAndAdd(char[][] board, int pieces, String playerName) {
+        
+        //initialize needed variables
+        String pos;
+        String dir;
+        Scanner input = new Scanner(System.in);
+
+
+        // have the user choose where they want to put their battleship
+        do {
+            // Ask user where to place battleship
+            System.out.println();
+            System.out.println("Where would you like to place the front of your battleship (4 spaces)?");
+            System.out.print("Please enter in the format a1, b2, etc: ");
+            pos = input.nextLine();
+
+            // Ask user what direction they want the battleship to go in
+            System.out.println();
+            System.out
+                    .print("What direction do you want to ship to go in? Enter h for horizontal and v for vertical: ");
+            dir = input.nextLine();
+            System.out.println();
+
+        } while (checkPiece(pos, dir, pieces)
+                || (checkOverlap(pos, dir, pieces, board)));
+
+        // set the battleship down based on what the user put
+        addPiece(pos, dir, pieces, board);
+
+        // have the user hit enter twice to see their new board
+        System.out.print(playerName + ", press Enter twice to generate the board with the battleship added: ");
+        input.nextLine();
+        input.nextLine();
+
+        // output board with new piece
+        outputBoard(board);
+
+
     }
     
 }
