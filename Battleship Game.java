@@ -324,6 +324,7 @@ class BattleshipGame{
 
     }
     
+    //FIXME: check errors
     //method to set up the opponent's board
     public static void getRandomPiece(char[][] board, int pieces) {
 
@@ -335,12 +336,12 @@ class BattleshipGame{
         do {
 
             //get random row and column numbers
-            rowNum = (int) (Math.random() * 10 + 2);
-            colNum = (int) (Math.random() * 10 + 2);
+            rowNum = (int) (Math.random() * 9 + 2);
+            colNum = (int) (Math.random() * 9 + 2);
             //get a random direction
-            int dirNum = (int) Math.random() + 2;
+            double dirNum =  Math.random() * 2;
 
-            if (dirNum == 1) {
+            if (dirNum > .5) {
                 dir = 'v';
             } else {
                 dir = 'h';
@@ -389,7 +390,7 @@ class BattleshipGame{
         // of the newly placed piece
         if (direction == 'h') {
 
-            for (i = rowNum + 2; i < rowNum + 3; ++i) {
+            for (i = rowNum + 1; i < rowNum + 2; ++i) {
                 for (j = columnNum; j < columnNum + numPieces; ++j) {
                     if (board[i][j] == '+') {
                         bool = true;
