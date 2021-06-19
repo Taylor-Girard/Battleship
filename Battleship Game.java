@@ -9,12 +9,13 @@ class BattleshipGame{
         //initialize all variables/arrays that will be used
         String player1;
         char[][] player1Board;
+        char[][] opponentBoardReal;
         int carrierPieces = 5;
         int battleshipPieces = 4;
         int cruiserPieces = 3;
         int submarinePieces = 3;
         int destroyerPieces = 2;
-
+        /*
         //print welcome message
         System.out.println("Welcome to Battleship!");
         System.out.println();
@@ -30,7 +31,7 @@ class BattleshipGame{
         input.nextLine();
         input.nextLine();
 
-        //create and output the player's empty board
+        //create player's empty board
         player1Board = new char[13][13];
 
         //put the array into the functions to set up the player's board
@@ -67,9 +68,34 @@ class BattleshipGame{
 
         // get the position of the submarine and place it down
         getPieceAndAdd(player1Board, destroyerPieces, player1, nameAndNumber);
+        */
+
+        //set up opponent's board (real)
+        opponentBoardReal = new char[13][13];
+        setUpBoard(opponentBoardReal);
+
+        //add carrier
+        getRandomPiece(opponentBoardReal, carrierPieces);
+
+        //add battleship
+        getRandomPiece(opponentBoardReal, battleshipPieces);
+
+        //add cruiser
+        getRandomPiece(opponentBoardReal, cruiserPieces);
+
+        //add submarine
+        getRandomPiece(opponentBoardReal, submarinePieces);
+
+        //add destroyer
+        getRandomPiece(opponentBoardReal, destroyerPieces);
+  
+        outputBoard(opponentBoardReal);
+
+
+
 
         //close the input
-        input.close();
+        //input.close();
     }
 
     //method to make the empty board
@@ -259,12 +285,11 @@ class BattleshipGame{
     
     //method that gets the piece and places it down
     public static void getPieceAndAdd(char[][] board, int pieces, String playerName, String pieceName) {
-        
+
         //initialize needed variables
         String pos;
         String dir;
         Scanner input = new Scanner(System.in);
-
 
         // have the user choose where they want to put their battleship
         do {
@@ -276,13 +301,12 @@ class BattleshipGame{
 
             // Ask user what direction they want the piece to go in
             System.out.println();
-            System.out
-                    .print("What direction do you want the piece to go in? Enter h for horizontal and v for vertical: ");
+            System.out.print(
+                    "What direction do you want the piece to go in? Enter h for horizontal and v for vertical: ");
             dir = input.nextLine();
             System.out.println();
 
-        } while (checkPiece(pos, dir, pieces)
-                || (checkOverlap(pos, dir, pieces, board)));
+        } while (checkPiece(pos, dir, pieces) || (checkOverlap(pos, dir, pieces, board)));
 
         // set the piece down based on what the user put
         addPiece(pos, dir, pieces, board);
@@ -295,7 +319,129 @@ class BattleshipGame{
         // output board with new piece
         outputBoard(board);
 
+    }
+    
+    //method to set up the opponent's board
+    public static void getRandomPiece(char[][] board, int pieces) {
+
+        //initialize needed values
+        int rowNum;
+        int colNum;
+        char dir;
+
+        do {
+
+            //get random row and column numbers
+            rowNum = (int) Math.random() * 10 + 2;
+            colNum = (int) Math.random() * 10 + 2;
+
+            //get a random direction
+            int dirNum = (int) Math.random() + 2;
+
+            if (dirNum == 1) {
+                dir = 'v';
+            } else {
+                dir = 'h';
+            }
+
+        } while (checkRandomPiece(colNum, rowNum, dir, pieces)
+                || (checkRandomOverlap(colNum, rowNum, dir, pieces, board)));
+            
+        addRandomPiece(colNum, rowNum, dir, pieces, board);
 
     }
     
+    /* method to check if the random piece can fit in the window with the given position &
+    direction */
+    public static Boolean checkRandomPiece(int colNum, int rowNum, char direction, int numPieces) {
+
+        //initialize values needed
+        Boolean bool = false;
+
+        /* check for both the vertical and horizontal placement if user chose a spot
+        with enough space for the piece */
+        if ((direction == 'v') && ((rowNum + numPieces) > 10)) {
+            bool = true;
+        } else if ((direction == 'h' && (numPieces == 5) && ((colNum >= 9) && (colNum <= 12)))) {
+            bool = true;
+        } else if ((direction == 'h' && (numPieces == 4) && ((colNum >= 10) && (colNum <= 12)))) {
+            bool = true;
+        } else if ((direction == 'h' && (numPieces == 3) && ((colNum >= 11) && (colNum <= 12)))) {
+            bool = true;
+        } else if ((direction == 'h' && (numPieces == 2) && (colNum == 12))) {
+            bool = true;
+        } else {
+            bool = false;
+        }
+        return bool;
+    }
+
+    // method to check that random piece is not overlapping another piece
+    public static Boolean checkRandomOverlap(int columnNum, int rowNum, char direction, int numPieces, char[][] board) {
+
+        // initialize needed variables
+        Boolean bool;
+        int i;
+        int j;
+
+        // for either direction, check if there are any overlapping pieces in the path
+        // of the newly placed piece
+        if (direction == 'h') {
+
+            for (i = rowNum + 2; i < rowNum + 3; ++i) {
+                for (j = columnNum; j < columnNum + numPieces; ++j) {
+                    if (board[i][j] == '+') {
+                        bool = true;
+                        return bool;
+                    }
+
+                }
+            }
+
+        } else {
+
+            for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
+                for (j = columnNum; j < columnNum + 1; ++j) {
+                    if (board[i][j] == '+') {
+                        bool = true;
+                        return bool;
+                    }
+                }
+            }
+
+        }
+
+        // return the boolean as false value if nothing overlaps
+        bool = false;
+        return bool;
+    }
+
+    // method to place down the pieces for you
+    public static void addRandomPiece(int columnNum, int rowNum, char direction, int numPieces, char[][] board) {
+
+        // initialize needed variables
+        int i;
+        int j;
+
+        // if the direction is horizontal, place the piece across the correct number of columns
+        if (direction == 'h') {
+
+            for (i = rowNum + 2; i < rowNum + 3; ++i) {
+                for (j = columnNum; j < columnNum + numPieces; ++j) {
+                    board[i][j] = '+';
+                }
+            }
+
+        // if the direction is vertical, place the piece across the correct number of rows
+        } else {
+
+            for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
+                for (j = columnNum; j < columnNum + 1; ++j) {
+                    board[i][j] = '+';
+                }
+            }
+
+        }
+    }
+
 }
