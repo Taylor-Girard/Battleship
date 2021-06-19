@@ -30,7 +30,8 @@ class BattleshipGame{
         System.out.print("Hi " + player1 + ". Thank you for playing! Press Enter twice to generate your empty board: ");
         input.nextLine();
         input.nextLine();
-
+        
+       
         //create player's empty board
         player1Board = new char[13][13];
 
@@ -69,7 +70,7 @@ class BattleshipGame{
         // get the position of the submarine and place it down
         getPieceAndAdd(player1Board, destroyerPieces, player1, nameAndNumber);
         */
-
+        
         //set up opponent's board (real)
         opponentBoardReal = new char[13][13];
         setUpBoard(opponentBoardReal);
@@ -88,9 +89,10 @@ class BattleshipGame{
 
         //add destroyer
         getRandomPiece(opponentBoardReal, destroyerPieces);
-  
+
         outputBoard(opponentBoardReal);
-        System.out.println("hi");
+        
+        
 
 
 
@@ -333,9 +335,8 @@ class BattleshipGame{
         do {
 
             //get random row and column numbers
-            rowNum = (int) Math.random() * 10 + 2;
-            colNum = (int) Math.random() * 10 + 2;
-
+            rowNum = (int) (Math.random() * 10 + 2);
+            colNum = (int) (Math.random() * 10 + 2);
             //get a random direction
             int dirNum = (int) Math.random() + 2;
 
@@ -345,13 +346,12 @@ class BattleshipGame{
                 dir = 'h';
             }
 
-        } while (checkRandomPiece(colNum, rowNum, dir, pieces)
-                || (checkRandomOverlap(colNum, rowNum, dir, pieces, board)));
+        } while (checkRandomPiece(colNum, rowNum, dir, pieces) || (checkRandomOverlap(colNum, rowNum, dir, pieces, board)));
             
+        System.out.println(rowNum + " " + colNum);
         addRandomPiece(colNum, rowNum, dir, pieces, board);
 
     }
-    
     /* method to check if the random piece can fit in the window with the given position &
     direction */
     public static Boolean checkRandomPiece(int colNum, int rowNum, char direction, int numPieces) {
@@ -361,22 +361,22 @@ class BattleshipGame{
 
         /* check for both the vertical and horizontal placement if user chose a spot
         with enough space for the piece */
-        if ((direction == 'v') && ((rowNum + numPieces) > 10)) {
+        if ((direction == 'v') && ((rowNum + numPieces + 2) > 10)) {
             bool = true;
-        } else if ((direction == 'h' && (numPieces == 5) && ((colNum >= 9) && (colNum <= 12)))) {
+        } else if ((direction == 'h' && (numPieces == 5) && ((colNum >= 8) && (colNum <= 12)))) {
             bool = true;
-        } else if ((direction == 'h' && (numPieces == 4) && ((colNum >= 10) && (colNum <= 12)))) {
+        } else if ((direction == 'h' && (numPieces == 4) && ((colNum >= 9) && (colNum <= 12)))) {
             bool = true;
-        } else if ((direction == 'h' && (numPieces == 3) && ((colNum >= 11) && (colNum <= 12)))) {
+        } else if ((direction == 'h' && (numPieces == 3) && ((colNum >= 10) && (colNum <= 12)))) {
             bool = true;
-        } else if ((direction == 'h' && (numPieces == 2) && (colNum == 12))) {
+        } else if ((direction == 'h' && (numPieces == 2) && (colNum == 11))) {
             bool = true;
         } else {
             bool = false;
         }
         return bool;
     }
-
+    
     // method to check that random piece is not overlapping another piece
     public static Boolean checkRandomOverlap(int columnNum, int rowNum, char direction, int numPieces, char[][] board) {
 
