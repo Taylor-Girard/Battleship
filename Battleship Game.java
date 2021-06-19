@@ -90,6 +90,7 @@ class BattleshipGame{
         getRandomPiece(opponentBoardReal, destroyerPieces);
   
         outputBoard(opponentBoardReal);
+        System.out.println("hi");
 
 
 
