@@ -15,7 +15,7 @@ class BattleshipGame{
         int cruiserPieces = 3;
         int submarinePieces = 3;
         int destroyerPieces = 2;
-        /*
+        
         //print welcome message
         System.out.println("Welcome to Battleship!");
         System.out.println();
@@ -69,7 +69,6 @@ class BattleshipGame{
 
         // get the position of the submarine and place it down
         getPieceAndAdd(player1Board, destroyerPieces, player1, nameAndNumber);
-        */
         
         //set up opponent's board (real)
         opponentBoardReal = new char[13][13];
@@ -90,6 +89,7 @@ class BattleshipGame{
         //add destroyer
         getRandomPiece(opponentBoardReal, destroyerPieces);
 
+        //output player's real board **for testing purposes only**
         outputBoard(opponentBoardReal);
         
         
@@ -390,7 +390,7 @@ class BattleshipGame{
         // of the newly placed piece
         if (direction == 'h') {
 
-            for (i = rowNum + 1; i < rowNum + 2; ++i) {
+            for (i = rowNum; i < rowNum + 1; ++i) {
                 for (j = columnNum; j < columnNum + numPieces; ++j) {
                     if (board[i][j] == '+') {
                         bool = true;
@@ -402,7 +402,7 @@ class BattleshipGame{
 
         } else {
 
-            for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
+            for (i = rowNum; i <= rowNum + numPieces; ++i) {
                 for (j = columnNum; j < columnNum + 1; ++j) {
                     if (board[i][j] == '+') {
                         bool = true;
@@ -428,7 +428,7 @@ class BattleshipGame{
         // if the direction is horizontal, place the piece across the correct number of columns
         if (direction == 'h') {
 
-            for (i = rowNum + 2; i < rowNum + 3; ++i) {
+            for (i = rowNum; i < rowNum + 1; ++i) {
                 for (j = columnNum; j < columnNum + numPieces; ++j) {
                     board[i][j] = '+';
                 }
@@ -437,7 +437,7 @@ class BattleshipGame{
         // if the direction is vertical, place the piece across the correct number of rows
         } else {
 
-            for (i = rowNum + 2; i < rowNum + numPieces + 2; ++i) {
+            for (i = rowNum; i < rowNum + numPieces; ++i) {
                 for (j = columnNum; j < columnNum + 1; ++j) {
                     board[i][j] = '+';
                 }
