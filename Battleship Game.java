@@ -10,11 +10,14 @@ class BattleshipGame{
         String player1;
         char[][] player1Board;
         char[][] opponentBoardReal;
+        char[][] opponentBoardFake;
         int carrierPieces = 5;
         int battleshipPieces = 4;
         int cruiserPieces = 3;
         int submarinePieces = 3;
         int destroyerPieces = 2;
+        int playerHitCount = 0;
+        int opponentHitCount = 0;
         
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -92,13 +95,22 @@ class BattleshipGame{
         //output player's real board **for testing purposes only**
         outputBoard(opponentBoardReal);
         
+        //create a fake opponent board that will be displayed to player
+        opponentBoardFake = new char[13][13];
+        setUpBoard(opponentBoardFake);
+        outputBoard(opponentBoardFake);
+
+        //have player and opponent switch off picking spots until game is over
+        do {
+
+            //ask player what space they want to choose
+            System.out.println(player1 + ", pick which space you want to attack");
+            String playerChoice = input.nextLine();
+
+        } while ((playerHitCount < 17) || (opponentHitCount < 17));
+
+
         
-
-
-
-
-        //close the input
-        //input.close();
     }
 
     //method to make the empty board
@@ -324,7 +336,6 @@ class BattleshipGame{
 
     }
     
-    //FIXME: check errors
     //method to set up the opponent's board
     public static void getRandomPiece(char[][] board, int pieces) {
 
@@ -434,7 +445,7 @@ class BattleshipGame{
                 }
             }
 
-        // if the direction is vertical, place the piece across the correct number of rows
+            // if the direction is vertical, place the piece across the correct number of rows
         } else {
 
             for (i = rowNum; i < rowNum + numPieces; ++i) {
@@ -445,5 +456,8 @@ class BattleshipGame{
 
         }
     }
+    
+    //create function to add a hit or miss symbol onto opponent's board depending player's choice
+
 
 }
