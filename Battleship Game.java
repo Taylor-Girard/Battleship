@@ -1,6 +1,5 @@
 
 import java.util.Scanner;
-import java.util.Arrays;
 
 class BattleshipGame{
 
@@ -29,49 +28,51 @@ class BattleshipGame{
         player1 = input.nextLine();
         System.out.println();
 
+        /*
         //pause until player is ready to output the board
         System.out.print("Hi " + player1 + ". Thank you for playing! Press Enter twice to generate your empty board: ");
         input.nextLine();
         input.nextLine();
         
-       
+        
         //create player's empty board
         player1Board = new char[13][13];
-
+        
         //put the array into the functions to set up the player's board
         setUpBoard(player1Board);
-
+        
         //output the empty board
         outputBoard(player1Board);
-
+        
         //set piece name to carrier and piece number to 5
         String nameAndNumber = "carrier (5 pieces)";
-
+        
         getPieceAndAdd(player1Board, carrierPieces, player1, nameAndNumber);
-
+        
         // set piece name to battleship and piece number to 4
         nameAndNumber = "battleship (4 pieces)";
         
         //get the position of the battleship and place it down
         getPieceAndAdd(player1Board, battleshipPieces, player1, nameAndNumber);
-
+        
         // set piece name to cruiser and piece number to 3
         nameAndNumber = "cruiser (3 pieces)";
-
+        
         // get the position of the cruiser and place it down
         getPieceAndAdd(player1Board, cruiserPieces, player1, nameAndNumber);
-
+        
         // set piece name to submarine and piece number to 3
         nameAndNumber = "submarine (3 pieces)";
-
+        
         // get the position of the submarine and place it down
         getPieceAndAdd(player1Board, submarinePieces, player1, nameAndNumber);
-
+        
         // set piece name to submarine and piece number to 3
         nameAndNumber = "destroyer (2 pieces)";
-
+        
         // get the position of the submarine and place it down
         getPieceAndAdd(player1Board, destroyerPieces, player1, nameAndNumber);
+        */
         
         //set up opponent's board (real)
         opponentBoardReal = new char[13][13];
@@ -95,7 +96,7 @@ class BattleshipGame{
         //output player's real board **for testing purposes only**
         outputBoard(opponentBoardReal);
         
-        //create a fake opponent board that will be displayed to player
+        //create and display fake opponent board that will be displayed to player
         opponentBoardFake = new char[13][13];
         setUpBoard(opponentBoardFake);
         outputBoard(opponentBoardFake);
@@ -106,9 +107,14 @@ class BattleshipGame{
             //ask player what space they want to choose
             System.out.println(player1 + ", pick which space you want to attack");
             String playerChoice = input.nextLine();
+            System.out.println();
+            opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
+            //FIXME: test that hitcount counter works properly
+            System.out.println(opponentHitCount);
+            outputBoard(opponentBoardReal);
+            outputBoard(opponentBoardFake);
 
-        } while ((playerHitCount < 17) || (opponentHitCount < 17));
-
+        } while ((playerHitCount < 17) && (opponentHitCount < 17));
 
         
     }
@@ -458,6 +464,24 @@ class BattleshipGame{
     }
     
     //create function to add a hit or miss symbol onto opponent's board depending player's choice
+    public static int hitOrMissOpponent(char[][] realBoard, char[][] fakeBoard, String pos, int hitCount) {
 
+        //initialize needed variables
+        char column = pos.charAt(0);
+        char row = pos.charAt(1);
+        int rowNum = Character.getNumericValue(row);
+        int columnNum = Character.getNumericValue(column) - 8;
+
+        if (realBoard[rowNum + 2][columnNum] == '+') {
+            System.out.println("HIT!!");
+            fakeBoard[rowNum + 2][columnNum] = 'X';
+            hitCount += 1;
+        } else {
+            System.out.println("Miss :(");
+            fakeBoard[rowNum + 2][columnNum] = '~';
+        }
+        return hitCount;
+    }
+    
 
 }
