@@ -366,7 +366,6 @@ class BattleshipGame{
 
         } while (checkRandomPiece(colNum, rowNum, dir, pieces) || (checkRandomOverlap(colNum, rowNum, dir, pieces, board)));
             
-        System.out.println(rowNum + " " + colNum);
         addRandomPiece(colNum, rowNum, dir, pieces, board);
 
     }
