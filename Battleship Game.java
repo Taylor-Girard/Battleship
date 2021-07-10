@@ -109,7 +109,7 @@ class BattleshipGame{
             String playerChoice = input.nextLine();
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
-            //FIXME: test that hitcount counter works properly
+            
             System.out.println(opponentHitCount);
             outputBoard(opponentBoardReal);
             outputBoard(opponentBoardFake);
