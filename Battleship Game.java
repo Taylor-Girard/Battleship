@@ -5,6 +5,8 @@ class BattleshipGame{
 
     public static void main(String[] args) {
 
+        //FIXME: check that game works all together
+        
         //initialize all variables/arrays that will be used
         String player1;
         char[][] player1Board;
@@ -28,7 +30,7 @@ class BattleshipGame{
         player1 = input.nextLine();
         System.out.println();
 
-        /*
+        
         //pause until player is ready to output the board
         System.out.print("Hi " + player1 + ". Thank you for playing! Press Enter twice to generate your empty board: ");
         input.nextLine();
@@ -72,7 +74,6 @@ class BattleshipGame{
         
         // get the position of the submarine and place it down
         getPieceAndAdd(player1Board, destroyerPieces, player1, nameAndNumber);
-        */
         
         //set up opponent's board (real)
         opponentBoardReal = new char[13][13];
@@ -99,20 +100,34 @@ class BattleshipGame{
         //create and display fake opponent board that will be displayed to player
         opponentBoardFake = new char[13][13];
         setUpBoard(opponentBoardFake);
-        outputBoard(opponentBoardFake);
 
         //have player and opponent switch off picking spots until game is over
         do {
+
+            // Wait for player to show the opponent's move
+            System.out.println("Hit enter twice to see the opponent's board:");
+            input.nextLine();
+            input.nextLine();
+
+            //show opponent board
+            System.out.println(opponentBoardReal);
+            System.out.println("Here is your opponent's board:");
+            outputBoard(opponentBoardFake);
 
             //ask player what space they want to choose
             System.out.println(player1 + ", pick which space you want to attack");
             String playerChoice = input.nextLine();
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
-            
-            System.out.println(opponentHitCount);
-            outputBoard(opponentBoardReal);
-            outputBoard(opponentBoardFake);
+        
+            //Wait for player to show the opponent's move
+            System.out.println("Hit enter twice to see the opponent's move:");
+            input.nextLine();
+            input.nextLine();
+
+            //do the opponent's move based on random chance
+            playerHitCount = hitOrMissPlayer(player1Board, playerHitCount);
+            outputBoard(player1Board);
 
         } while ((playerHitCount < 17) && (opponentHitCount < 17));
 
@@ -356,9 +371,9 @@ class BattleshipGame{
             rowNum = (int) (Math.random() * 9 + 2);
             colNum = (int) (Math.random() * 9 + 2);
             //get a random direction
-            double dirNum =  Math.random() * 2;
+            double dirNum =  Math.random();
 
-            if (dirNum > .5) {
+            if (dirNum >= .5) {
                 dir = 'v';
             } else {
                 dir = 'h';
@@ -450,7 +465,7 @@ class BattleshipGame{
                 }
             }
 
-            // if the direction is vertical, place the piece across the correct number of rows
+        // if the direction is vertical, place the piece across the correct number of rows
         } else {
 
             for (i = rowNum; i < rowNum + numPieces; ++i) {
@@ -471,6 +486,7 @@ class BattleshipGame{
         int rowNum = Character.getNumericValue(row);
         int columnNum = Character.getNumericValue(column) - 8;
 
+        //determine if the player hit or miss the ships and put appropriate character
         if (realBoard[rowNum + 2][columnNum] == '+') {
             System.out.println("HIT!!");
             fakeBoard[rowNum + 2][columnNum] = 'X';
@@ -482,5 +498,29 @@ class BattleshipGame{
         return hitCount;
     }
     
+    // create function to add a hit or miss symbol onto opponent's board depending on random choice choice
+    public static int hitOrMissPlayer(char[][] board, int hitCount) {
+
+        //initialize needed variables
+        int rowNum;
+        int colNum;
+
+        //use computer's random guess (may be changed later to be more advanced) to choose space on player's board
+        do{
+        rowNum = (int) (Math.random() * 9 + 2.99);
+        colNum = (int) (Math.random() * 9 + 2.99);
+        } while ((board[rowNum][colNum] == '~') || (board[rowNum][colNum] == 'X'));
+
+        //determine if it is a hit or miss and put the appropriate character
+        if (board[rowNum][colNum] == '+') {
+            System.out.println("The opponent hit your ship!");
+            board[rowNum][colNum] = 'X';
+            hitCount += 1;
+        } else {
+            System.out.println("Yes! The opponent missed your ship.");
+            board[rowNum][colNum] = '~';
+        }
+        return hitCount;
+    }
 
 }
