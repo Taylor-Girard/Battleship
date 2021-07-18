@@ -4,8 +4,6 @@ import java.util.Scanner;
 class BattleshipGame{
 
     public static void main(String[] args) {
-
-        //FIXME: check that game works all together
         
         //initialize all variables/arrays that will be used
         String player1;
@@ -93,9 +91,6 @@ class BattleshipGame{
 
         //add destroyer
         getRandomPiece(opponentBoardReal, destroyerPieces);
-
-        //output player's real board **for testing purposes only**
-        outputBoard(opponentBoardReal);
         
         //create and display fake opponent board that will be displayed to player
         opponentBoardFake = new char[13][13];
@@ -110,7 +105,7 @@ class BattleshipGame{
             input.nextLine();
 
             //show opponent board
-            System.out.println(opponentBoardReal);
+            outputBoard(opponentBoardReal);
             System.out.println("Here is your opponent's board:");
             outputBoard(opponentBoardFake);
 
@@ -119,8 +114,13 @@ class BattleshipGame{
             String playerChoice = input.nextLine();
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
+
+            if (opponentHitCount >= 17) {
+                break;
+            } //FIXME: test that this block works properly
         
             //Wait for player to show the opponent's move
+            System.out.println();
             System.out.println("Hit enter twice to see the opponent's move:");
             input.nextLine();
             input.nextLine();
