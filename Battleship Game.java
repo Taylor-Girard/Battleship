@@ -17,6 +17,9 @@ class BattleshipGame{
         int destroyerPieces = 2;
         int playerHitCount = 0;
         int opponentHitCount = 0;
+        String playerChoice;
+        int rowNum;
+        int columnNum;
         
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -109,9 +112,15 @@ class BattleshipGame{
             System.out.println("Here is your opponent's board:");
             outputBoard(opponentBoardFake);
 
-            //ask player what space they want to choose
-            System.out.println(player1 + ", pick which space you want to attack");
-            String playerChoice = input.nextLine();
+            //ask player what space they want to choose and check validity of their choice
+            //FIXME: test input validation
+            do{
+                System.out.println(player1 + ", pick which space you want to attack");
+                playerChoice = input.nextLine();
+                columnNum = Character.getNumericValue(playerChoice.charAt(0)) - 8;
+                rowNum = Character.getNumericValue(playerChoice.charAt(1));
+            } while ((playerChoice.length() > 2) || (columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
+            
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
 
@@ -349,22 +358,29 @@ class BattleshipGame{
         //initialize needed variables
         String pos;
         String dir;
+        int columnNum;
+        int rowNum;
         Scanner input = new Scanner(System.in);
 
         // have the user choose where they want to put their battleship
         do {
-            // Ask user where to place pice
-            System.out.println();
-            System.out.println("Where would you like to place the front of your " + pieceName + "?");
-            System.out.print("Please enter in the format a1, b2, etc: ");
-            pos = input.nextLine();
+            // Ask user where to place piece and check for valid answers 
+            do{
+                System.out.println();
+                System.out.println("Where would you like to place the front of your " + pieceName + "?");
+                System.out.print("Please enter in the format a1, b2, etc: ");
+                pos = input.nextLine();
+                columnNum = Character.getNumericValue(pos.charAt(0)) - 8;
+                rowNum = Character.getNumericValue(pos.charAt(1));
+            } while ((pos.length() > 2) || (columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
 
-            // Ask user what direction they want the piece to go in
+            // Ask user what direction they want the piece to go in and check the validity of their input
             System.out.println();
-            System.out.print(
-                    "What direction do you want the piece to go in? Enter h for horizontal and v for vertical: ");
+            do{
+            System.out.print("What direction do you want the piece to go in? Enter h for horizontal and v for vertical: ");
             dir = input.nextLine();
             System.out.println();
+            } while (!(dir.equals("h")) && !(dir.equals("v")));
 
         } while (checkPiece(pos, dir, pieces) || (checkOverlap(pos, dir, pieces, board)));
 
