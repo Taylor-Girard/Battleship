@@ -115,9 +115,10 @@ class BattleshipGame{
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
 
+            //if the player wins in this turn, skip to the winning outputs
             if (opponentHitCount >= 17) {
                 break;
-            } //FIXME: test that this block works properly
+            }
         
             //Wait for player to show the opponent's move
             System.out.println();
@@ -130,6 +131,29 @@ class BattleshipGame{
             outputBoard(player1Board);
 
         } while ((playerHitCount < 17) && (opponentHitCount < 17));
+
+        //let the player know if they won or not
+        if (opponentHitCount >= 17) {
+            System.out.println("Congratulations! You sunk all of the opponent's battleships and won the game :)");
+        } else {
+            System.out.println("Oh no! The opponent sunk all of your ships. You lose :(");
+        }
+
+        //output both boards to compare
+        System.out.println("Hit enter twice to see all of the final boards:");
+        input.nextLine();
+        input.nextLine();
+        System.out.println();
+        System.out.println("Your board:");
+        outputBoard(player1Board);
+
+        System.out.println();
+        System.out.println("Opponent board:");
+        outputBoard(opponentBoardFake);
+        System.out.println("Their battleship placement:");
+        outputBoard(opponentBoardReal);
+
+
 
         
     }
