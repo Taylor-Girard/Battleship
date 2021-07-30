@@ -113,9 +113,8 @@ class BattleshipGame{
             outputBoard(opponentBoardFake);
 
             //ask player what space they want to choose and check validity of their choice
-            //FIXME: test input validation
             do{
-                System.out.println(player1 + ", pick which space you want to attack");
+                System.out.println(player1 + ", pick which space you want to attack:");
                 playerChoice = input.nextLine();
                 columnNum = Character.getNumericValue(playerChoice.charAt(0)) - 8;
                 rowNum = Character.getNumericValue(playerChoice.charAt(1));
@@ -143,9 +142,9 @@ class BattleshipGame{
 
         //let the player know if they won or not
         if (opponentHitCount >= 17) {
-            System.out.println("Congratulations! You sunk all of the opponent's battleships and won the game :)");
+            System.out.println("Congratulations, " +  player1 + "! You sunk all of the opponent's battleships and won the game :)");
         } else {
-            System.out.println("Oh no! The opponent sunk all of your ships. You lose :(");
+            System.out.println("Oh no, " + player1 + "! The opponent sunk all of your ships. You lose :(");
         }
 
         //output both boards to compare
@@ -404,6 +403,8 @@ class BattleshipGame{
         int rowNum;
         int colNum;
         char dir;
+
+        //FIXME: find a way to make this AI smarter
 
         do {
 
