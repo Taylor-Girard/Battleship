@@ -15,11 +15,16 @@ class BattleshipGame{
         int cruiserPieces = 3;
         int submarinePieces = 3;
         int destroyerPieces = 2;
-        int playerHitCount = 0;
+        int[] playerHitCount;
+        playerHitCount = new int[5];
+        //playerHitCount[0]: player hit count, playerHitCount[1]: amount of hits in a row, 
+        //playerHitCount[2]: previous colNum, playerHitCount[3]: previous rowNum
+        //playerHitCount[4]: previous direction of hit (if needed)
         int opponentHitCount = 0;
         String playerChoice;
         int rowNum;
         int columnNum;
+        
         
         //print welcome message
         System.out.println("Welcome to Battleship!");
@@ -138,7 +143,7 @@ class BattleshipGame{
             playerHitCount = hitOrMissPlayer(player1Board, playerHitCount);
             outputBoard(player1Board);
 
-        } while ((playerHitCount < 17) && (opponentHitCount < 17));
+        } while ((playerHitCount[0] < 17) && (opponentHitCount < 17));
 
         //let the player know if they won or not
         if (opponentHitCount >= 17) {
@@ -161,9 +166,6 @@ class BattleshipGame{
         System.out.println("Their battleship placement:");
         outputBoard(opponentBoardReal);
 
-
-
-        
     }
 
     //method to make the empty board
@@ -404,8 +406,6 @@ class BattleshipGame{
         int colNum;
         char dir;
 
-        //FIXME: find a way to make this AI smarter
-
         do {
 
             //get random row and column numbers
@@ -540,27 +540,77 @@ class BattleshipGame{
     }
     
     // create function to add a hit or miss symbol onto opponent's board depending on random choice choice
-    public static int hitOrMissPlayer(char[][] board, int hitCount) {
+    public static int[] hitOrMissPlayer(char[][] board, int[] hitCount) {
+        // hitCount[0] is player hit count, hitCount[1] is the amount of hits in a row
 
         //initialize needed variables
         int rowNum;
         int colNum;
+        int dir;
 
         //use computer's random guess (may be changed later to be more advanced) to choose space on player's board
-        do{
-        rowNum = (int) (Math.random() * 9 + 2.99);
-        colNum = (int) (Math.random() * 9 + 2.99);
-        } while ((board[rowNum][colNum] == '~') || (board[rowNum][colNum] == 'X'));
+        do {
+            //computer picks random piece until it gets hit
+            if (hitCount[1] == 0) {
+                rowNum = (int) (Math.random() * 9 + 2.99);
+                colNum = (int) (Math.random() * 9 + 2.99);
+                dir = hitCount[4];
+            
+            //if it hits once, it will try the adjacent squares for another hit
+            } else if (hitCount[1] == 1) {
+                dir = (int) (Math.random() * 3 + 1.99);
+                if (dir == 1) {
+                    colNum = hitCount[2];
+                    rowNum = hitCount[3] - 1;
+                } else if (dir == 2) {
+                    colNum = hitCount[2] + 1;
+                    rowNum = hitCount[3];
+                } else if (dir == 3) {
+                    colNum = hitCount[2];
+                    rowNum = hitCount[3] + 1;
+                } else {
+                    colNum = hitCount[2] - 1;
+                    rowNum = hitCount[3];
+                }
+            //if it finds a row/column containing a ship, it will follow it until it doesn't have any more hits
+            } else {
+                dir = hitCount[4];
+                if (dir == 1) {
+                    colNum = hitCount[2];
+                    rowNum = hitCount[3] - 1;
+                } else if (dir == 2) {
+                    colNum = hitCount[2] + 1;
+                    rowNum = hitCount[3];
+                } else if (dir == 3) {
+                    colNum = hitCount[2];
+                    rowNum = hitCount[3] + 1;
+                } else {
+                    colNum = hitCount[2] - 1;
+                    rowNum = hitCount[3];
+                }
+            }
+        } while ((board[rowNum][colNum] == '~') || (board[rowNum][colNum] == 'X') || (rowNum < 2) || (rowNum > 11)
+                || (colNum < 2) || (colNum > 11));
 
         //determine if it is a hit or miss and put the appropriate character
         if (board[rowNum][colNum] == '+') {
             System.out.println("The opponent hit your ship!");
             board[rowNum][colNum] = 'X';
-            hitCount += 1;
+            hitCount[0] += 1;
+            hitCount[1] += 1;
         } else {
             System.out.println("Yes! The opponent missed your ship.");
             board[rowNum][colNum] = '~';
+            
+            if (hitCount[1] > 1) {
+                hitCount[1] = 0;
+            }
         }
+
+        hitCount[2] = colNum;
+        hitCount[3] = rowNum;
+        hitCount[4] = dir;
+
         return hitCount;
     }
 
