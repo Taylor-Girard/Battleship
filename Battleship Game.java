@@ -118,12 +118,14 @@ class BattleshipGame{
             outputBoard(opponentBoardFake);
 
             //ask player what space they want to choose and check validity of their choice
-            do{
+            do {
+                do{
                 System.out.println(player1 + ", pick which space you want to attack:");
                 playerChoice = input.nextLine();
+            } while (playerChoice.length() != 2);
                 columnNum = Character.getNumericValue(playerChoice.charAt(0)) - 8;
                 rowNum = Character.getNumericValue(playerChoice.charAt(1));
-            } while ((playerChoice.length() > 2) || (columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
+            } while ((columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
             
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
@@ -366,14 +368,16 @@ class BattleshipGame{
         // have the user choose where they want to put their battleship
         do {
             // Ask user where to place piece and check for valid answers 
-            do{
-                System.out.println();
-                System.out.println("Where would you like to place the front of your " + pieceName + "?");
-                System.out.print("Please enter in the format a1, b2, etc: ");
-                pos = input.nextLine();
+            do {
+                do{
+                    System.out.println();
+                    System.out.println("Where would you like to place the front of your " + pieceName + "?");
+                    System.out.print("Please enter in the format a1, b2, etc: ");
+                    pos = input.nextLine();
+                } while ((pos.length() != 2));
                 columnNum = Character.getNumericValue(pos.charAt(0)) - 8;
                 rowNum = Character.getNumericValue(pos.charAt(1));
-            } while ((pos.length() > 2) || (columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
+            } while ( (columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
 
             // Ask user what direction they want the piece to go in and check the validity of their input
             System.out.println();
