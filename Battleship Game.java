@@ -113,20 +113,23 @@ class BattleshipGame{
             input.nextLine();
 
             //show opponent board
-            outputBoard(opponentBoardReal);
             System.out.println("Here is your opponent's board:");
             outputBoard(opponentBoardFake);
 
             //ask player what space they want to choose and check validity of their choice
             do {
+                //Check that their input is the correct length
                 do{
-                System.out.println(player1 + ", pick which space you want to attack:");
-                playerChoice = input.nextLine();
-            } while (playerChoice.length() != 2);
-                columnNum = Character.getNumericValue(playerChoice.charAt(0)) - 8;
-                rowNum = Character.getNumericValue(playerChoice.charAt(1));
-            } while ((columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9));
+                    System.out.println(player1 + ", pick which space you want to attack:");
+                    playerChoice = input.nextLine();
+                } while (playerChoice.length() != 2);
+                    columnNum = Character.getNumericValue(playerChoice.charAt(0)) - 8;
+                    rowNum = Character.getNumericValue(playerChoice.charAt(1));
+            } while ((columnNum > 11) || (columnNum < 2) || (rowNum < 0) || (rowNum > 9)
+                    || (opponentBoardFake[rowNum + 2][columnNum] == '~') || (opponentBoardFake[rowNum + 2][columnNum] == 'X'));
             
+        
+            //determine if the user's choice was a hit or miss
             System.out.println();
             opponentHitCount = hitOrMissOpponent(opponentBoardReal, opponentBoardFake, playerChoice, opponentHitCount);
 
@@ -154,7 +157,7 @@ class BattleshipGame{
             System.out.println("Oh no, " + player1 + "! The opponent sunk all of your ships. You lose :(");
         }
 
-        //output both boards to compare
+        //output all of the boards for the player to see
         System.out.println("Hit enter twice to see all of the final boards:");
         input.nextLine();
         input.nextLine();
@@ -545,7 +548,7 @@ class BattleshipGame{
     
     // create function to add a hit or miss symbol onto opponent's board depending on random choice choice
     public static int[] hitOrMissPlayer(char[][] board, int[] hitCount) {
-        // hitCount[0] is player hit count, hitCount[1] is the amount of hits in a row
+        //see top of program for hitCount index values
 
         //initialize needed variables
         int rowNum;
@@ -602,18 +605,29 @@ class BattleshipGame{
             board[rowNum][colNum] = 'X';
             hitCount[0] += 1;
             hitCount[1] += 1;
+
+            hitCount[2] = colNum;
+            hitCount[3] = rowNum;
+
         } else {
             System.out.println("Yes! The opponent missed your ship.");
             board[rowNum][colNum] = '~';
-            
-            if (hitCount[1] > 1) {
+
+            //only change the value of the most recent hit if the opponent hasn't only done one hit (want it to keep searching for pieces to hit)
+            if (hitCount[1] != 1) {
                 hitCount[1] = 0;
+                hitCount[2] = colNum;
+                hitCount[3] = rowNum;
             }
         }
 
-        hitCount[2] = colNum;
-        hitCount[3] = rowNum;
+        //let the direction value stay the same regardless of the amount of hits in a row
         hitCount[4] = dir;
+
+        //to make sure AI doesn't get stuck at end barrier
+        if ((hitCount[1] > 1) && ((colNum == 2) || (colNum == 11) || (rowNum == 2) || (rowNum == 11))) {
+            hitCount[1] = 0;
+        }
 
         return hitCount;
     }
