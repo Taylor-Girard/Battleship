@@ -4,14 +4,14 @@ The game allows the user to play a game of battleship against a semi-intelligent
 
 Here are some photos of the game in action: 
 
-![Alt text]("C:\Users\686ta\OneDrive\Desktop\Programming_Work\Battleship\images\Battleship1.PNG")
+![Alt text]("..\images\Battleship1.PNG")
 
-![Alt text]("C:\Users\686ta\OneDrive\Desktop\Programming_Work\Battleship\images\Battleship2.PNG")
+![Alt text]("..\images\Battleship2.PNG")
 
-![Alt text]("C:\Users\686ta\OneDrive\Desktop\Programming_Work\Battleship\images\Battleship3.PNG")
+![Alt text]("..\images\Battleship3.PNG")
 
-![Alt text]("C:\Users\686ta\OneDrive\Desktop\Programming_Work\Battleship\images\Battleship4.PNG")
+![Alt text]("..\images\Battleship4.PNG")
 
-![Alt text]("C:\Users\686ta\OneDrive\Desktop\Programming_Work\Battleship\images\Battleship5.PNG")
+![Alt text]("..\images\Battleship5.PNG")
 
 
