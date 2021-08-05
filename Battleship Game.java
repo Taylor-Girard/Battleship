@@ -49,7 +49,7 @@ class BattleshipGame{
         //put the array into the functions to set up the player's board
         setUpBoard(player1Board);
         
-        //output the empty board
+        //output the empty board for player
         outputBoard(player1Board);
         
         //set piece name to carrier and piece number to 5
