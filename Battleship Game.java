@@ -578,13 +578,13 @@ class BattleshipGame{
              
             //computer picks random piece until it gets hit if it doesn't have anywhere to go
             } else if (hitCount[1] == 0) {
-                rowNum = (int) (Math.random() * 9 + 2.1);
-                colNum = (int) (Math.random() * 9 + 2.1);
+                rowNum = (int) (Math.random() * 9 + 2.49);
+                colNum = (int) (Math.random() * 9 + 2.49);
                 dir = hitCount[4];
             
             //if it hits once, it will try the adjacent squares for another hit
             } else {
-                dir = (int) (Math.random() * 3 + 1.99);
+                dir = (int) (Math.random() * 3 + 1.49);
                 if (dir == 1) {
                     colNum = hitCount[2];
                     rowNum = hitCount[3] - 1;
