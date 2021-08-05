@@ -557,14 +557,33 @@ class BattleshipGame{
 
         //use computer's random guess (may be changed later to be more advanced) to choose space on player's board
         do {
-            //computer picks random piece until it gets hit
-            if (hitCount[1] == 0) {
-                rowNum = (int) (Math.random() * 9 + 2.99);
-                colNum = (int) (Math.random() * 9 + 2.99);
+
+            // if it finds a row/column containing a ship, it will follow it until it
+            // doesn't have any more hits
+            if (hitCount[1] > 1) {
+                dir = hitCount[4];
+                if (dir == 1) {
+                    colNum = hitCount[2];
+                    rowNum = hitCount[3] - 1;
+                } else if (dir == 2) {
+                    colNum = hitCount[2] + 1;
+                    rowNum = hitCount[3];
+                } else if (dir == 3) {
+                    colNum = hitCount[2];
+                    rowNum = hitCount[3] + 1;
+                } else {
+                    colNum = hitCount[2] - 1;
+                    rowNum = hitCount[3];
+                }
+             
+            //computer picks random piece until it gets hit if it doesn't have anywhere to go
+            } else if (hitCount[1] == 0) {
+                rowNum = (int) (Math.random() * 9 + 2.1);
+                colNum = (int) (Math.random() * 9 + 2.1);
                 dir = hitCount[4];
             
             //if it hits once, it will try the adjacent squares for another hit
-            } else if (hitCount[1] == 1) {
+            } else {
                 dir = (int) (Math.random() * 3 + 1.99);
                 if (dir == 1) {
                     colNum = hitCount[2];
@@ -579,25 +598,16 @@ class BattleshipGame{
                     colNum = hitCount[2] - 1;
                     rowNum = hitCount[3];
                 }
-            //if it finds a row/column containing a ship, it will follow it until it doesn't have any more hits
-            } else {
-                dir = hitCount[4];
-                if (dir == 1) {
-                    colNum = hitCount[2];
-                    rowNum = hitCount[3] - 1;
-                } else if (dir == 2) {
-                    colNum = hitCount[2] + 1;
-                    rowNum = hitCount[3];
-                } else if (dir == 3) {
-                    colNum = hitCount[2];
-                    rowNum = hitCount[3] + 1;
-                } else {
-                    colNum = hitCount[2] - 1;
-                    rowNum = hitCount[3];
-                }
             }
+            
+            //check that it doesn't get stuck when following a line of hits if it hits another drowned ship
+            if ((hitCount[1] > 1) && ((board[rowNum][colNum] == '~') || (board[rowNum][colNum] == 'X'))) {
+                hitCount[1] = 0;
+            }
+
         } while ((board[rowNum][colNum] == '~') || (board[rowNum][colNum] == 'X') || (rowNum < 2) || (rowNum > 11)
                 || (colNum < 2) || (colNum > 11));
+
 
         //determine if it is a hit or miss and put the appropriate character
         if (board[rowNum][colNum] == '+') {
@@ -624,8 +634,9 @@ class BattleshipGame{
         //let the direction value stay the same regardless of the amount of hits in a row
         hitCount[4] = dir;
 
-        //to make sure AI doesn't get stuck at end barrier
-        if ((hitCount[1] > 1) && ((colNum == 2) || (colNum == 11) || (rowNum == 2) || (rowNum == 11))) {
+        //to make sure AI doesn't get stuck at end barrier or other hit piece
+        if ((hitCount[1] > 1) && (((colNum == 2 && hitCount[4] == 4)) || ((colNum == 11 && hitCount[4] == 2))
+            || ((rowNum == 2 && hitCount[4] == 1)) || ((rowNum == 11) && hitCount[4] == 3))) {
             hitCount[1] = 0;
         }
 
